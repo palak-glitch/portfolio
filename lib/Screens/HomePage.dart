@@ -13,6 +13,8 @@ import 'package:palakportfolio/Screens/phone_home_page.dart';
 import 'package:palakportfolio/widgets/frosted_container.dart';
 import 'package:provider/provider.dart';
 
+import '../Provider/theme_provider.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -23,35 +25,70 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
+    ThemeProvider theme = Provider.of<ThemeProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
     CurrentState currentState = Provider.of<CurrentState>(
       context,
       listen: false,
     );
+    theme.size = MediaQuery.of(context).size;
+    theme.widthRatio = theme.size.width / baseWidth;
+    theme.heightRatio = theme.size.height / baseHeight;
+    bool phone = false;
+    if (size.width < 800) {
+      phone = true;
+    }
     return Scaffold(
       body: Stack(
         children: [
-          Selector<CurrentState, int>(
-            selector: (context, provider) => provider.knobSelected,
+          // Selector<CurrentState, int>(
+          Selector<CurrentState, Gradient>(
+            selector: (context, provider) => provider.bgGradient,
+            // selector: (context, provider) => provider.knobSelected,
             builder: (context, _, _) {
               return Container(
                 decoration: BoxDecoration(
-                  gradient: colorPalette[currentState.knobSelected].gradient,
+                  gradient: currentState.bgGradient,
+                  // gradient: colorPalette[currentState.knobSelected].gradient,
                 ),
               );
             },
           ),
 
-          Selector<CurrentState, int>(
-            selector: (context, provider) => provider.knobSelected,
-            builder: (context, _, _) {
+          // size.height > 600
+          //     ? const Rain(
+          //   oposite: false,
+          //   top: 300,
+          // )
+          //     : Container(),
+          Selector<CurrentState, String>(
+            selector: (context, provider) => provider.selectedCloud,
+            builder: (context, _, __) {
               return SvgPicture.asset(
-                colorPalette[currentState.knobSelected].svgPath,
+                currentState.selectedCloud,
+                // width: double.infinity,
                 height: size.height,
                 fit: BoxFit.cover,
               );
             },
           ),
+          // Selector<CurrentState, int>(
+          //   selector: (context, provider) => provider.knobSelected,
+          //   builder: (context, _, _) {
+          //     return SvgPicture.asset(
+          //       colorPalette[currentState.knobSelected].svgPath,
+          //       height: size.height,
+          //       fit: BoxFit.cover,
+          //     );
+          //   },
+          // ),
+          // size.height > 600
+          //     ? const Rain(
+          //   oposite: true,
+          //   top: 50,
+          // )
+          //     : Container(),
+          //
 
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -61,6 +98,9 @@ class _HomepageState extends State<Homepage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // phone
+                  //     ? Container()
+                  //     :
                   Column(
                     children: [
                       FrostedContainer(
@@ -86,7 +126,7 @@ class _HomepageState extends State<Homepage> {
                           device: currentState.currentDevice,
                           screen: Container(
                               decoration: BoxDecoration(
-                                gradient: colorPalette[currentState.knobSelected].gradient,
+                                gradient: currentState.bgGradient,
                               ),
                               child: ScreenWrapper(
                                   childG: currentState.currentScreen
@@ -116,7 +156,7 @@ class _HomepageState extends State<Homepage> {
                                       },
                                       animate: true,
                                       pressed:
-                                          currentState.knobSelected == index
+                                          currentState.bgGradient == index
                                               ? Pressed.pressed
                                               : Pressed.notPressed,
                                       isThreeD: true,
@@ -146,44 +186,81 @@ class _HomepageState extends State<Homepage> {
               ),
 
               SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ...List.generate(
-                    devices.length,
-                    (index) => Selector<CurrentState, DeviceInfo>(
-                      selector: (context, provider) => provider.currentDevice,
-                      builder: (context, _, _) {
-                        return CustomButton(
-                          backgroundColor: Colors.black,
-                          onPressed: () {
-                            currentState.changeSelectedDevice(
-                              devices[index].device,
-                            );
-                          },
-                          animate: true,
-                          height: 38,
-                          width: 38,
-                          borderRadius: 100,
-                          isThreeD: true,
-                          pressed:
-                              currentState.currentDevice ==
-                                      devices[index].device
-                                  ? Pressed.pressed
-                                  : Pressed.notPressed,
-                          shadowColor: Colors.greenAccent,
-                          child: Center(
-                            child: Icon(
-                              devices[index].icon,
-                              color: Colors.white,
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     ...List.generate(
+              //       devices.length,
+              //       (index) => Selector<CurrentState, DeviceInfo>(
+              //         selector: (context, provider) => provider.currentDevice,
+              //         builder: (context, _, _) {
+              //           return CustomButton(
+              //             backgroundColor: Colors.black,
+              //             onPressed: () {
+              //               currentState.changeSelectedDevice(
+              //                 devices[index].device,
+              //               );
+              //             },
+              //             animate: true,
+              //             height: 38,
+              //             width: 38,
+              //             borderRadius: 100,
+              //             isThreeD: true,
+              //             pressed:
+              //                 currentState.currentDevice ==
+              //                         devices[index].device
+              //                     ? Pressed.pressed
+              //                     : Pressed.notPressed,
+              //             shadowColor: Colors.greenAccent,
+              //             child: Center(
+              //               child: Icon(
+              //                 devices[index].icon,
+              //                 color: Colors.white,
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //       ),
+              //     ),
+              //   ],
+              // ),
+
+              /// bottom button for device selection
+              Selector<CurrentState, DeviceInfo>(
+                  selector: (context, p1) => p1.currentDevice,
+                  builder: (context, _, __) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ...List.generate(devices.length, (index) {
+                          return CustomButton(
+                            pressed: currentState.currentDevice ==
+                                devices[index].device
+                                ? Pressed.pressed
+                                : Pressed.notPressed,
+                            animate: true,
+                            borderRadius: 100,
+                            isThreeD: true,
+                            backgroundColor: Colors.black,
+                            width: 37.5,
+                            height: 37.5,
+                            onPressed: () {
+                              currentState.changeSelectedDevice(
+                                devices[index].device,
+                              );
+                            },
+                            child: Center(
+                              child: Icon(
+                                devices[index].icon,
+                                color: Colors.white,
+                                size: 25,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                          );
+                        })
+                      ],
+                    );
+                  }),
             ],
           ),
         ],

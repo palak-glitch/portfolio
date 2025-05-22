@@ -18,7 +18,6 @@ class _phoneHomeScreenState extends State<phoneHomeScreen> {
   @override
   Widget build(BuildContext context) {
     CurrentState currentState = Provider.of<CurrentState>(context);
-    Size size = MediaQuery.of(context).size;
 
     return Container(
       child: Wrap(

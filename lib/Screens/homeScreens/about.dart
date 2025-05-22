@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../Consts/constants.dart';
 
@@ -12,6 +13,8 @@ class AboutMe extends StatefulWidget {
 }
 
 class _AboutMeState extends State<AboutMe> {
+  double opacity = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,22 +25,31 @@ class _AboutMeState extends State<AboutMe> {
           child: Container(
             decoration: BoxDecoration(
               color: Color(0xfff5f4e7),
-
             ),
             padding: EdgeInsets.all(10),
             child: Column(
               children: [
                 CircleAvatar(
                   radius: 50,
+                  child: Icon(Icons.face_2, size: 70,),
                 ),
-                Text(
-                  "Hi, This is Palak Pandey",
-                  style: GoogleFonts.openSans(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+                Container(
+                  alignment: Alignment.center,
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  child: Text(
+                    "Hi, This is Palak Pandey",
+                    style: GoogleFonts.openSans(
+                      color: Colors.black,
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Text(
                   Introduction,
-                  style: GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
-                ),
+                  style: GoogleFonts.openSans(
+                      color: Colors.purple,
+                      fontSize: 15, fontWeight: FontWeight.w500),
+                ).animate().fadeIn(duration: const Duration(milliseconds: 500)),
               ],
             ),
           ),
