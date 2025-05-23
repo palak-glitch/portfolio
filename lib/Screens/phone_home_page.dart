@@ -29,6 +29,7 @@ class _phoneHomeScreenState extends State<phoneHomeScreen> {
             (index) => Container(
               margin: EdgeInsets.only(top: 50, right: 10, left: 10, bottom: 20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomButton(
                     margin: EdgeInsets.only(bottom: 5),
@@ -49,8 +50,8 @@ class _phoneHomeScreenState extends State<phoneHomeScreen> {
                       }
                     },
 
-                    height: 45,
-                    width: 45,
+                    height: 55,
+                    width: 55,
                     backgroundColor: apps[index].bgcolor,
                     child: Center(
                       child: Icon(
@@ -65,6 +66,8 @@ class _phoneHomeScreenState extends State<phoneHomeScreen> {
                     child: Center(
                       child: Text(
                         apps[index].title!,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                         style: GoogleFonts.openSans(
                           fontSize: 11,
                           color: Colors.white,

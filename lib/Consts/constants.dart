@@ -40,16 +40,16 @@ List<ColorModel> colorPalette = [
     color: Colors.blue,
   ),
   ColorModel(
-      svgPath: "images/blue Cloud.svg",
+      svgPath: "images/Green.svg",
       color: const Color(0xff00d6ca),
       gradient: const LinearGradient(
-        colors: [Color(0xff00ebd5), Color(0xff293474)],
+        colors: [Color(0xff0DAE15), Color(0xff00d6ca)],
         stops: [0, 1],
         begin: Alignment.bottomRight,
         end: Alignment.topLeft,
       )),
   ColorModel(
-    svgPath: "images/red Cloud.svg",
+    svgPath: "images/Dark_Blue.svg",
     color: const Color(0xff123cd1),
     gradient: const LinearGradient(
       begin: Alignment.topLeft,
@@ -58,7 +58,7 @@ List<ColorModel> colorPalette = [
     ),
   ),
   ColorModel(
-    svgPath: "images/blue Cloud.svg",
+    svgPath: "images/purple.svg",
     color: Colors.purple,
     gradient: const LinearGradient(
       colors: [Color(0xffc95edb), Colors.black12],
